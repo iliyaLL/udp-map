@@ -55,6 +55,25 @@ func Set(command string) string {
 	return "OK"
 }
 
+// SET Foo Bar
+// GET Foo
+// Bar
 func Get(command string) string {
-	return ""
+	parts := strings.Fields(command)
+	if len(parts) != 2 {
+		return "(error) ERR wrong number of arguments for 'GET' command"
+	}
+
+	mu.RLock()
+	defer mu.RUnlock()
+	key := parts[1]
+	if item, ok := storage[key]; ok {
+		if !item.expiry.IsZero() && time.Now().After(item.expiry) {
+			delete(storage, key)
+			return "(nil)"
+		}
+		return item.value
+	}
+
+	return "(nil)"
 }

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net"
 	"strings"
 	"udp-map/pkg/kvstorage"
@@ -23,12 +24,12 @@ func StartServer(port string) error {
 	// Read from UDP listener in endless loop
 	for {
 		buf := make([]byte, 1024)
-		_, addr, err := conn.ReadFromUDP(buf)
+		n, addr, err := conn.ReadFromUDP(buf)
 		if err != nil {
 			return err
 		}
 
-		command := strings.TrimSpace(string(buf))
+		command := strings.TrimSpace(string(buf[:n]))
 		var response string
 		switch {
 		case strings.HasPrefix(strings.ToLower(command), "ping"):
@@ -36,6 +37,7 @@ func StartServer(port string) error {
 		case strings.HasPrefix(strings.ToLower(command), "set"):
 			response = kvstorage.Set(command)
 		case strings.HasPrefix(strings.ToLower(command), "get"):
+			fmt.Println("Received command:", command)
 			response = kvstorage.Get(command)
 		default:
 			response = "(error) ERR unknown command"
