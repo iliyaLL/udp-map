@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"net"
 	"strings"
 	"udp-map/pkg/kvstorage"
@@ -37,7 +36,6 @@ func StartServer(port string) error {
 		case strings.HasPrefix(strings.ToLower(command), "set"):
 			response = kvstorage.Set(command)
 		case strings.HasPrefix(strings.ToLower(command), "get"):
-			fmt.Println("Received command:", command)
 			response = kvstorage.Get(command)
 		default:
 			response = "(error) ERR unknown command"
