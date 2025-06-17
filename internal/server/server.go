@@ -1,6 +1,7 @@
 package server
 
 import (
+	"log"
 	"net"
 	"strings"
 
@@ -20,6 +21,11 @@ func StartServer(port string) error {
 		return err
 	}
 	defer conn.Close()
+
+	// Log the server start
+	log.Printf("Server started on port %s", port)
+	// Log the server start
+	log.Printf("Listening for UDP connections on %s", udpAddr.String())
 
 	// Read from UDP listener in endless loop
 	for {
