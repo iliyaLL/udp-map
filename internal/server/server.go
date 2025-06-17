@@ -3,6 +3,7 @@ package server
 import (
 	"net"
 	"strings"
+	"udp-map/pkg/kvstorage"
 )
 
 func StartServer(port string) error {
@@ -33,13 +34,13 @@ func StartServer(port string) error {
 		case strings.HasPrefix(strings.ToLower(command), "ping"):
 			response = "PONG"
 		case strings.HasPrefix(strings.ToLower(command), "set"):
-			response = kvstorage.SET(command)
+			response = kvstorage.Set(command)
 		case strings.HasPrefix(strings.ToLower(command), "get"):
-			response = kvstorage.GET(command)
+			response = kvstorage.Get(command)
 		default:
 			response = "(error) ERR unknown command"
 		}
-	}
 
-	return nil
+		conn.WriteToUDP([]byte(response+"\n"), addr)
+	}
 }

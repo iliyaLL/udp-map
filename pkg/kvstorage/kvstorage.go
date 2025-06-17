@@ -55,8 +55,6 @@ func Set(command string) string {
 	return "OK"
 }
 
-func Get(key string) (string, error) {
-	// This function should retrieve the value associated with the key from the storage.
-	// For now, it returns an empty string and nil error.
-	return "", nil
+func Get(command string) string {
+	return ""
 }
