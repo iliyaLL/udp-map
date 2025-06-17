@@ -6,6 +6,9 @@ import (
 	"time"
 )
 
+// expiry time.Time can be used to set an expiration time for the key-value pair.
+// Example: SET key value PX 10000
+// The PX option allows you to specify the expiration time in milliseconds.
 type storageItem struct {
 	value  string
 	expiry time.Time
