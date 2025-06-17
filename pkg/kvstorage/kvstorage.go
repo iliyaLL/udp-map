@@ -27,11 +27,7 @@ func Set(command string) string {
 	mu.Lock()
 	defer mu.Unlock()
 
-	if len(parts) > 3 && strings.ToUpper(parts[len(parts)-2]) == "PX" {
-		if len(parts) < 5 {
-			return "(error) ERR wrong number of arguments for 'SET' command with PX"
-		}
-
+	if len(parts) >= 5 && strings.ToUpper(parts[len(parts)-2]) == "PX" {
 		// Parse the duration in milliseconds
 		expirationTime, err := time.ParseDuration(parts[len(parts)-1] + "ms")
 		if err != nil {
